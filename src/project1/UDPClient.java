@@ -14,14 +14,15 @@ public class UDPClient extends Thread{
     private int uniqueSeqNum;
     private long startTime;
     private boolean wasPacketRecieved;
-    private byte[] packetRecievedMessage;
+    public byte[] packetRecievedMessage;
     
     public UDPClient(String hostNameInput, int numOfThreads) {
         hostName = hostNameInput;
         numOfIterations = numOfThreads;
         uniqueSeqGenerator = new Random();
         wasPacketRecieved = false;
-        packetRecievedMessage[0] = 0101;
+        packetRecievedMessage = new byte[5];
+        packetRecievedMessage[0] = 25;
         
     }
     

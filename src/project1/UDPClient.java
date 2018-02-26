@@ -74,7 +74,7 @@ public class UDPClient extends Thread{
                 DatagramPacket ackPacket = new DatagramPacket(ackArray, ackArray.length);
                 socket.receive(ackPacket);
                 
-                if (ackPacket.getData()[0] == packetRecievedMessage[0]) {
+                if (ackPacket.getData()[0] == packet.getData()[0]) {
                     wasPacketRecieved = true;
                 }
             }

@@ -13,14 +13,14 @@ public class UDPClient extends Thread{
     private Random uniqueSeqGenerator;
     private int uniqueSeqNum;
     private long startTime;
-    private boolean wasPacketRecieved;
+    private boolean[] wasPacketRecieved;
     public byte[] packetRecievedMessage;
     
     public UDPClient(String hostNameInput, int numOfThreads) {
         hostName = hostNameInput;
         numOfIterations = numOfThreads;
         uniqueSeqGenerator = new Random();
-        wasPacketRecieved = false;
+        wasPacketRecieved = new boolean[numOfThreads];
         packetRecievedMessage = new byte[5];
         packetRecievedMessage[0] = 25;
         
@@ -35,7 +35,7 @@ public class UDPClient extends Thread{
                 // Create a datagram socket, look for the first available port
                 DatagramSocket socket = new DatagramSocket();
 
-                System.out.println("Using local port: " + socket.getLocalPort());
+                //System.out.println("Using local port: " + socket.getLocalPort());
                 ByteArrayOutputStream bOut = new ByteArrayOutputStream();
                 PrintStream pOut = new PrintStream(bOut);
                 pOut.print(uniqueSeqNum);
@@ -46,13 +46,13 @@ public class UDPClient extends Thread{
                 //Create a datagram packet, containing a maximum buffer of 256 bytes
                 DatagramPacket packet = new DatagramPacket(bArray, bArray.length);
 
-                System.out.println("Looking for hostname" + hostName);
+                //System.out.println("Looking for hostname" + hostName);
 
                 //get the InetAddress object
                 InetAddress remote_addr = InetAddress.getByName(hostName);
 
                 //check its IP number
-                System.out.println("Hostname has IP address =" + remote_addr.getHostAddress());
+                //System.out.println("Hostname has IP address =" + remote_addr.getHostAddress());
 
                 //configure the DataGrampacket
                 packet.setAddress(remote_addr);
@@ -75,7 +75,8 @@ public class UDPClient extends Thread{
                 socket.receive(ackPacket);
                 
                 if (ackPacket.getData()[0] == packet.getData()[0]) {
-                    wasPacketRecieved = true;
+                    wasPacketRecieved[i] = true;
+                    startTime = 0;
                 }
             }
             
@@ -92,7 +93,7 @@ public class UDPClient extends Thread{
         return startTime;
     }
     
-       public boolean returnPacketStatus() {
-        return wasPacketRecieved;
+       public boolean returnPacketStatus(int count) {
+        return wasPacketRecieved[count];
     }
 }

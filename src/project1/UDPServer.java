@@ -9,6 +9,11 @@ public class UDPServer extends Thread {
     private DatagramSocket socket;
     private DatagramPacket packet;
     private Random randomNumStream;
+    private boolean wasServerPacketRecieved;
+    
+    public UDPServer() {
+        wasServerPacketRecieved = false;
+    }
 
     
     public void run() {
@@ -27,7 +32,7 @@ public class UDPServer extends Thread {
             while(true) {
                 //Receive a packet -remember by default this is a blocking operation
                 socket.receive(packet);
-                
+                wasServerPacketRecieved = true;
                 int randomNum = randomNumStream.nextInt();
                 
                 if (randomNum % 2 == 0) {
@@ -49,6 +54,7 @@ public class UDPServer extends Thread {
                 ByteArrayInputStream bin = new ByteArrayInputStream(packet.getData());
 
                 //Display only up to the length of the original UDP packet
+                /*
                 for(int i = 0; i < packet.getLength(); i++) {
                     int data = bin.read();
                     if(data == -1) {
@@ -56,7 +62,7 @@ public class UDPServer extends Thread {
                     }
                     else System.out.print((char) data);
                 }
-
+                */
                 socket.close();
 
         }
@@ -64,5 +70,16 @@ public class UDPServer extends Thread {
     }
     catch (IOException e){System.out.println("Error-" + e);}
     catch (InterruptedException e){System.out.println("Error-" + e);}
+    }
+    
+    public boolean returnWasPacketRecieved() {
+        return wasServerPacketRecieved;
+    }
+    
+    public int returnPacketData() {
+        byte[] data = packet.getData();
+        
+        int sequenceNum = (int)data[0];
+        return sequenceNum;
     }
 }

@@ -46,14 +46,13 @@ public class GUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextField1.setText("jTextField1");
+        jTextField1.setText("Click SetHost and setInterations before running default settings!!!");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
 
-        jRadioButton1.setSelected(true);
         jRadioButton1.setText("Server");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -61,6 +60,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        jRadioButton2.setSelected(true);
         jRadioButton2.setText("Client");
         jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -225,7 +225,7 @@ public class GUI extends javax.swing.JFrame {
         hostName = jTextArea1.getText();
         numOfIterations = Integer.parseInt(jTextArea2.getText());
         
-        if(doStartServer == true) {
+        if(doStartClient == true) {
             client = new UDPClient(hostName, numOfIterations);
             client.start();
             
@@ -234,6 +234,7 @@ public class GUI extends javax.swing.JFrame {
         
             while(startTime == 0) {
                 startTime = client.returnStartTime();
+                jTextField1.setText(Long.toString(startTime));
             }
         
             long totalDuration = endTime - startTime;
@@ -252,7 +253,12 @@ public class GUI extends javax.swing.JFrame {
                     
                     while(startTime == 0) {
                         startTime = client.returnStartTime();
+                        
                     }
+                    
+                    count++;
+
+                    
                 }
                 if (totalDuration > 300) {
                     jTextField1.setText("The client has been interrupted: Could not reach host!");
@@ -263,7 +269,6 @@ public class GUI extends javax.swing.JFrame {
                     endTime = System.currentTimeMillis();
                     totalDuration = endTime - startTime;
                 }
-                count++;
             }
         }
         else {

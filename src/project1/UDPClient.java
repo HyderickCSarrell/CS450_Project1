@@ -21,6 +21,11 @@ public class UDPClient extends Thread{
         numOfIterations = numOfThreads;
         uniqueSeqGenerator = new Random();
         wasPacketRecieved = new boolean[numOfThreads];
+        
+        for (int i = 0; i < numOfThreads; i++) {
+            wasPacketRecieved[i] = false;
+        }
+        
         packetRecievedMessage = new byte[5];
         packetRecievedMessage[0] = 25;
         

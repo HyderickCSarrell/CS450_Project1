@@ -63,7 +63,7 @@ public class UDPServer extends Thread {
                     else System.out.print((char) data);
                 }
                 */
-                socket.close();
+                //socket.close();
 
         }
         

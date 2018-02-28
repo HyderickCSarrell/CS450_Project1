@@ -268,13 +268,17 @@ public class GUI extends javax.swing.JFrame {
             }
         }
         else if (doStartServer == true){
-            server = new UDPServer();
             jTextField1.setText("The server has started.");
+            server = new UDPServer();
             server.start();
             
-            while(true) {
+            boolean breakMe = true;
+            
+            while(breakMe) {
                 if(server.returnWasPacketRecieved() == true) {
                     jTextField1.setText("The packet: " + server.returnPacketData() + "was received.");
+                    System.out.println("I ran a long ways...");
+                    breakMe = false;
                 }
             }
         }
